@@ -1,166 +1,33 @@
 <?xml version="1.0"?>
-<definitions xmlns="http://ws.apache.org/ns/synapse" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
-    <!--
-    <proxy name="MicroBlog" transports="vfs">
-        <parameter name="transport.vfs.FileURI">file:///Users/hoggarth/Development/synase_present/test/in</parameter>
-        <parameter name="transport.vfs.ContentType">text/xml</parameter>
-        <parameter name="transport.vfs.FileNamePattern">.*\.xml</parameter>
-        <parameter name="transport.PollInterval">15</parameter>
-        <parameter name="transport.vfs.MoveAfterProcess">file:///Users/hoggarth/Development/synase_present/test/original</parameter>
-        <parameter name="transport.vfs.MoveAfterFailure">file:///Users/hoggarth/Development/synase_present/test/original</parameter>
-        <parameter name="transport.vfs.ActionAfterProcess">MOVE</parameter>
-        <parameter name="transport.vfs.ActionAfterFailure">MOVE</parameter>
-    -->
-    <proxy name="MicroBlog" transports="http">
-        <target>
-            <outSequence>
-                <log separator=",">
-                    <property name="MESSAGE" value="OUT"/>
-                </log>
-                <send>
-                    <endpoint>
-                        <address uri="vfs:file:///Users/hoggarth/Development/synase_present/test/out"/>
-                    </endpoint>
-                </send>
-            </outSequence>
-            <inSequence>
-                <log separator=",">
-                    <property name="MESSAGE" value="IN"/>
-                    <property name="update-message" expression="//message"/>
-                    <property name="root" expression="name(//soapenv:Body/*[position()=1])"/>
-                </log>
-                <switch source="name(//soapenv:Body/*[position()=1])">
-                    <case regex="update">
-                        <dbreport>
-                            <connection>
-                                <pool>
-                                    <driver>org.apache.derby.jdbc.ClientDriver</driver>
-                                    <url>jdbc:derby://localhost:1527/microblog;user=synapse;password=synapse;create=false</url>
-                                    <user>synapse</user>
-                                    <password>synapse</password>
-                                </pool>
-                            </connection>
-                            <statement>
-                                <sql>INSERT INTO status (status) VALUES (?)</sql>
-                                <parameter expression="//message/child::text()" type="VARCHAR"/>
-                            </statement>
-                        </dbreport>
-                        <script language="js">
-                         			mc.setPayloadXML(
-                         			&lt;greeting&gt;Hello World&lt;/greeting&gt;
-                         			);
-                         		</script>
-                    </case>
-                    <case regex="timeline">
-                        <log separator=",">
-                            <property name="MESSAGE" value="TIMELINE"/>
-                        </log>
-                        <dblookup>
-                            <connection>
-                                <pool>
-                                    <driver>org.apache.derby.jdbc.ClientDriver</driver>
-                                    <url>jdbc:derby://localhost:1527/microblog;user=synapse;password=synapse;create=false</url>
-                                    <user>synapse</user>
-                                    <password>synapse</password>
-                                </pool>
-                            </connection>
-                            <statement>
-                                <sql>SELECT * FROM STATUS ORDER BY ID DESC FETCH FIRST ROW ONLY</sql>
-                                <result name="status_1" column="status"/>
-                            </statement>
-                            <statement>
-                                <sql>SELECT * FROM STATUS ORDER BY ID DESC OFFSET 1 ROW FETCH FIRST ROW ONLY</sql>
-                                <result name="status_2" column="status"/>
-                            </statement>
-                            <statement>
-                                <sql>SELECT * FROM STATUS ORDER BY ID DESC OFFSET 2 ROWS FETCH FIRST ROW ONLY</sql>
-                                <result name="status_3" column="status"/>
-                            </statement>
-                            <statement>
-                                <sql>SELECT * FROM STATUS ORDER BY ID DESC OFFSET 3 ROWS FETCH FIRST ROW ONLY</sql>
-                                <result name="status_4" column="status"/>
-                            </statement>
-                            <statement>
-                                <sql>SELECT * FROM STATUS ORDER BY ID DESC OFFSET 4 ROWS FETCH FIRST ROW ONLY</sql>
-                                <result name="status_5" column="status"/>
-                            </statement>
-                        </dblookup>
-                        <script language="js">
-                         			mc.setPayloadXML(new XML("&lt;timeline&gt;" 
-                         			                       + "&lt;message&gt;" + mc.getProperty("status_1") + "&lt;/message&gt;"
-                         			                       + "&lt;message&gt;" + mc.getProperty("status_2") + "&lt;/message&gt;"
-                         			                       + "&lt;message&gt;" + mc.getProperty("status_3") + "&lt;/message&gt;"
-                         			                       + "&lt;message&gt;" + mc.getProperty("status_4") + "&lt;/message&gt;"
-                         			                       + "&lt;message&gt;" + mc.getProperty("status_5") + "&lt;/message&gt;"
-                         			                       + "&lt;/timeline&gt;")
-                         			);
-                         		</script>
-                    </case>
-                </switch>
-                <header name="To" action="remove"/>
-                <property name="NO_ENTITY_BODY" scope="axis2" action="remove"/>
-                <property name="RESPONSE" value="true"/>
-                <send/>
-            </inSequence>
-        </target>
-        <publishWSDL uri="file:../src/resources/proxy/hello.wsdl"/>
-    </proxy>
-    <proxy name="Twitter" transports="http">
-        <target>
-            <outSequence>
-                <log separator=",">
-                    <property name="MESSAGE" value="OUT"/>
-                </log>
-                <send/>
-            </outSequence>
-            <inSequence>
-                <log separator=",">
-                    <property name="MESSAGE" value="IN"/>
-                    <property name="update-message" expression="//message"/>
-                    <property name="root" expression="name(//soapenv:Body/*[position()=1])"/>
-                </log>
-                <switch source="name(//soapenv:Body/*[position()=1])">
-                    <case regex="update">
-                        <xslt key="transform/twitter_update.xslt"/>
-                        <property name="Authorization" value="Basic c3luYXBzZV9wcmVzZW50OnN5bmFwc2U=" scope="transport"/>
-                        <send>
-                            <endpoint>
-                                <!--
-                        <address uri="http://twitter.com/statuses/update.xml" format="pox"/>
--->
-                                <address uri="http://localhost:9000/statuses/update.xml" format="pox"/>
-                            </endpoint>
-                        </send>
-                    </case>
-                    <case regex="timeline">
-                        <xslt key="transform/twitter_timeline.xslt"/>
-<!--
-                            <property name="Authorization" value="Basic c3luYXBzZV9wcmVzZW50OnN5bmFwc2U=" scope="transport"/>
--->
-                        <send>
-                            <endpoint>
-                                <address uri="http://localhost:9000/statuses" format="get"/>
-                            </endpoint>
-                        </send>
-                    </case>
-                </switch>
-                <!--
-                <script language="js">
-                 			mc.setPayloadXML(
-                 			&lt;greeting&gt;Hello World&lt;/greeting&gt;
-                 			);
-                </script>
-                <header name="To" action="remove"/>
-                <property name="NO_ENTITY_BODY" scope="axis2" action="remove"/>
-                <property name="RESPONSE" value="true"/>
-                <send/>
-                -->
-            </inSequence>
-        </target>
-        <publishWSDL uri="file:../src/resources/proxy/hello.wsdl"/>
-    </proxy>
+<definitions xmlns="http://ws.apache.org/ns/synapse" xmlns:cmd="http://TCJUG/command">
     <registry provider="org.apache.synapse.registry.url.SimpleURLRegistry">
         <parameter name="root">file:../src/resources/</parameter>
         <parameter name="cachableDuration">15000</parameter>
     </registry>
+    <proxy name="MicroBlog" transports="http">
+        <target inSequence="sequence/MicroBlog.In.xml" outSequence="sequence/MicroBlog.Out.xml" faultSequence="sequence/MicroBlog.Fault.xml"/>
+        <publishWSDL key="proxy/hi5.wsdl"/>
+    </proxy>
+    <proxy name="TweetHistoryProxy" transports="vfs">
+        <parameter name="transport.vfs.FileURI">file:///Users/hoggarth/.zsh</parameter>
+        <parameter name="transport.vfs.ContentType">text/plain; charset=ISO-8859-1</parameter>
+        <parameter name="transport.vfs.FileNamePattern">history</parameter>
+        <parameter name="transport.PollInterval">30</parameter>
+        <parameter name="transport.vfs.MoveAfterProcess">file:///Users/hoggarth/.zsh_</parameter>
+        <parameter name="transport.vfs.MoveAfterFailure">file:///Users/hoggarth/.zsh_</parameter>
+        <parameter name="transport.vfs.ActionAfterProcess">MOVE</parameter>
+        <parameter name="transport.vfs.ActionAfterFailure">MOVE</parameter>
+        <target inSequence="sequence/TweetHistory.In.xml" outSequence="sequence/TweetHistory.Out.xml" faultSequence="sequence/TweetHistory.Fault.xml"/>
+    </proxy>
+    <sequence name="fault" statistics="enable" trace="enable">
+        <sequence key="sequence/Main.Fault.xml"/>
+    </sequence>
+    <sequence name="main" statistics="enable">
+        <in>
+            <sequence key="sequence/Main.In.xml"/>
+        </in>
+        <out>
+            <sequence key="sequence/Main.Out.xml"/>
+        </out>
+    </sequence>
 </definitions>
