@@ -1,12 +1,7 @@
 <?xml version="1.0"?>
-<sequence xmlns="http://ws.apache.org/ns/synapse" name="Main.In.xml" xmlns:cmd="http://TCJUG/command">
-    <filter xpath="//cmd:TWEETHISTORY">
-        <then sequence="sequence/TweetHistory.In.xml"/>
-        <else>
-            <log level="full" separator=",">
-                <property name="MESSAGE" value="MAIN IN MESSAGE"/>
-            </log>
-            <drop/>
-        </else>
-    </filter>
+<sequence xmlns="http://ws.apache.org/ns/synapse" xmlns:cmd="http://TCJUG/command" name="Main.In.xml">
+    <log level="full" separator=",">
+        <property name="MESSAGE" value="MAIN IN MESSAGE"/>
+    </log>
+    <drop/>
 </sequence>
