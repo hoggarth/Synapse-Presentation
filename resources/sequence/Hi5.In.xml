@@ -6,7 +6,7 @@
     <property name="Cookie" value="Hi5AuthToken=S0qRk0tKkZMd5yCvAQAAAA..%3A2sdYC9ZJo6VKfw6P--aZwYBxlKRGliDn0cp_c-sjuntmZ8Pe-8U5Bge-XuFI8rQJmQRH-0C1cfBF1zcRNgOXDKej0a8H_j0VWw4oj9EY4Bs." scope="transport"/>
     <send>
         <endpoint>
-            <address uri="http://localhost:9876/soap/StatusApiService"/>
+            <address uri="http://api.hi5.com/soap/StatusApiService"/>
         </endpoint>
     </send>
     <drop/>
