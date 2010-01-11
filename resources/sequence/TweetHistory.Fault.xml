@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<sequence xmlns="http://ws.apache.org/ns/synapse" name="TweetHistory.Fault.xml">
+    <log level="full" separator=",">
+        <property name="MESSAGE" value="TWEETHISTORY FAULT MESSAGE"/>
+    </log>
+    <drop/>
+</sequence>

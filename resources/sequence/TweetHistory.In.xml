@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<sequence xmlns="http://ws.apache.org/ns/synapse" name="TweetHistory.In.xml">
+    <log level="full" separator=",">
+        <property name="MESSAGE" value="TWEETHISTORY IN MESSAGE"/>
+    </log>
+    <xslt key="transform/TweetHistory.SetStatus.xslt"/>
+    <property name="Authorization" value="Basic c3luYXBzZV9wcmVzZW50OnN5bmFwc2U=" scope="transport"/>
+    <send>
+        <endpoint>
+            <address uri="http://twitter.com/statuses/update.xml" format="pox"/>
+        </endpoint>
+    </send>
+    <drop/>
+</sequence>

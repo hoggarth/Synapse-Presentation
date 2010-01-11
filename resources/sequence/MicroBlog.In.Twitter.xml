@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<sequence xmlns="http://ws.apache.org/ns/synapse" name="MicroBlog.In.xml">
+    <log level="full" separator=",">
+        <property name="MESSAGE" value="MICROBLOG IN MESSAGE"/>
+    </log>
+    <sequence key="sequence/Twitter.In.xml"/>
+</sequence>

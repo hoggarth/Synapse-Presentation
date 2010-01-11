@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:hi5="http://api.hi5.com/status" >
+    <soapenv:Body>
+        <hi5:getStatus>
+            <userId>501686447</userId>
+        </hi5:getStatus>
+    </soapenv:Body>
+</soapenv:Envelope>

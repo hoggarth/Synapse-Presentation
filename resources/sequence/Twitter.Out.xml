@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<sequence xmlns="http://ws.apache.org/ns/synapse" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" name="Twitter.Out.xml">
+    <log level="full" separator=",">
+        <property name="MESSAGE" value="TWITTER OUT MESSAGE"/>
+    </log>
+    <switch source="local-name(//soapenv:Body/*[position()=1])">
+        <case regex="status">
+            <xslt key="transform/Twitter.SetStatus.Response.xslt"/>
+        </case>
+        <case regex="statuses">
+            <xslt key="transform/Twitter.GetStatus.Response.xslt"/>
+        </case>
+    </switch>
+    <send/>
+    <drop/>
+</sequence>

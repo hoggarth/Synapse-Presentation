@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="HelloService"
+   targetNamespace="http://www.ecerami.com/wsdl/HelloService.wsdl"
+   xmlns="http://schemas.xmlsoap.org/wsdl/"
+   xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+   xmlns:tns="http://www.ecerami.com/wsdl/HelloService.wsdl"
+   xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+ 
+   <message name="SetStatusRequest">
+      <part name="message" type="xsd:string"/>
+   </message>
+   <message name="SetStatusResponse">
+      <part name="message" type="xsd:string"/>
+   </message>
+   <message name="TimelineRequest">
+      <part name="message" type="xsd:string"/>
+   </message>
+   <message name="TimelineResponse">
+      <part name="message" type="xsd:string"/>
+   </message>
+ 
+   <portType name="Hello_PortType">
+       <operation name="setStatus">
+          <input message="tns:SetStatusRequest"/>
+          <output message="tns:SetStatusResponse"/>
+       </operation>
+       <operation name="timeline">
+          <input message="tns:TimelineRequest"/>
+          <output message="tns:TimelineResponse"/>
+       </operation>
+   </portType>
+   
+   <binding name="Hello_Binding" type="tns:Hello_PortType">
+      <soap:binding style="rpc" 
+         transport="http://schemas.xmlsoap.org/soap/http"/>
+         <operation name="setStatus">
+            <soap:operation soapAction="setStatus"/>
+            <input>
+               <soap:body
+                  encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                  namespace="urn:examples:helloservice"
+                  use="encoded"/>
+            </input>
+            <output>
+               <soap:body
+                  encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                  namespace="urn:examples:helloservice"
+                  use="encoded"/>
+            </output>
+         </operation>
+         <operation name="timeline">
+            <soap:operation soapAction="timeline"/>
+            <input>
+               <soap:body
+                  encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                  namespace="urn:examples:helloservice"
+                  use="encoded"/>
+            </input>
+            <output>
+               <soap:body
+                  encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                  namespace="urn:examples:helloservice"
+                  use="encoded"/>
+            </output>
+         </operation>
+   </binding>
+ 
+   <service name="Hello_Service">
+      <documentation>WSDL File for HelloService</documentation>
+      <port binding="tns:Hello_Binding" name="Hello_Port">
+         <soap:address 
+            location="http://localhost:8080/soap/servlet/rpcrouter"/>
+      </port>
+   </service>
+</definitions>

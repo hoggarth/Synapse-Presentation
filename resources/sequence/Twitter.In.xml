@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<sequence xmlns="http://ws.apache.org/ns/synapse" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" name="Twitter.In.xml">
+    <log level="full" separator=",">
+        <property name="MESSAGE" value="TWITTER IN MESSAGE"/>
+    </log>
+    <switch source="local-name(//soapenv:Body/*[position()=1])">
+        <case regex="setStatus">
+            <xslt key="transform/Twitter.SetStatus.xslt"/>
+            <property name="Authorization" value="Basic c3luYXBzZV9wcmVzZW50OnN5bmFwc2U=" scope="transport"/>
+            <send>
+                <endpoint>
+                    <address uri="http://twitter.com/statuses/update.xml" format="pox"/>
+                </endpoint>
+            </send>
+        </case>
+        <case regex="getStatus">
+            <xslt key="transform/Twitter.GetStatus.xslt"/>
+            <send>
+                <endpoint>
+                    <address uri="http://twitter.com/statuses" format="get"/>
+                </endpoint>
+            </send>
+        </case>
+    </switch>
+</sequence>

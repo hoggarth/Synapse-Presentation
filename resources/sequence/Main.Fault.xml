@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<sequence xmlns="http://ws.apache.org/ns/synapse" name="Main.Fault.xml">
+    <log level="full" separator=",">
+        <property name="MESSAGE" value="MAIN FAULT MESSAGE"/>
+    </log>
+    <drop/>
+</sequence>

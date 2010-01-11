@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:hi5="http://api.hi5.com/status" >
+    <soapenv:Body>
+        <hi5:setStatus>
+            <newStatus>It's Getting Better All The Time.</newStatus>
+        </hi5:setStatus>
+    </soapenv:Body>
+</soapenv:Envelope>
