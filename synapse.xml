@@ -8,17 +8,6 @@
         <target inSequence="sequence/MicroBlog.In.xml" outSequence="sequence/MicroBlog.Out.xml" faultSequence="sequence/MicroBlog.Fault.xml"/>
         <publishWSDL key="proxy/hi5.wsdl"/>
     </proxy>
-    <proxy name="TweetHistoryProxy" transports="vfs">
-        <parameter name="transport.vfs.FileURI">file:///Users/hoggarth/.zsh</parameter>
-        <parameter name="transport.vfs.ContentType">text/plain; charset=ISO-8859-1</parameter>
-        <parameter name="transport.vfs.FileNamePattern">history</parameter>
-        <parameter name="transport.PollInterval">30</parameter>
-        <parameter name="transport.vfs.MoveAfterProcess">file:///Users/hoggarth/.zsh_</parameter>
-        <parameter name="transport.vfs.MoveAfterFailure">file:///Users/hoggarth/.zsh_</parameter>
-        <parameter name="transport.vfs.ActionAfterProcess">MOVE</parameter>
-        <parameter name="transport.vfs.ActionAfterFailure">MOVE</parameter>
-        <target inSequence="sequence/TweetHistory.In.xml" outSequence="sequence/TweetHistory.Out.xml" faultSequence="sequence/TweetHistory.Fault.xml"/>
-    </proxy>
     <sequence name="fault" statistics="enable" trace="enable">
         <sequence key="sequence/Main.Fault.xml"/>
     </sequence>
