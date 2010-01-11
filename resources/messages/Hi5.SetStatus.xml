@@ -3,7 +3,7 @@
     <soapenv:Body>
         <hi5:setStatus>
             <userId>501686447</userId>
-            <newStatus>It's Getting Better All The Time.</newStatus>
+            <newStatus>Here is my status.</newStatus>
         </hi5:setStatus>
     </soapenv:Body>
 </soapenv:Envelope>

@@ -2,7 +2,6 @@
 <sequence xmlns="http://ws.apache.org/ns/synapse" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:hi5="http://api.hi5.com/status" name="Hi5.In.xml">
     <log level="full" separator=",">
         <property name="MESSAGE" value="HI5 IN MESSAGE"/>
-        <property name="ROOT" expression="local-name(//soapenv:Body/*[position()=1])"/>
     </log>
     <switch source="local-name(//soapenv:Body/*[position()=1])">
         <case regex="setStatus">
