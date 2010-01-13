@@ -1,0 +1,120 @@
+#I should set up TCP_MON
+twitter.com - 9000
+api.hi5.com - 9876
+
+#cli_twitter
+rm ~/.zsh/history
+synapse-1.2/bin/synapse.sh
+rm ~/.zsh/history
+
+#Download Synapse
+curl -0 http://mirrors.ibiblio.org/pub/mirrors/apache/synapse/1.2/synapse-1.2-bin.tar.gz | tar -zx
+
+#Introduce Synapse
+open http://synapse.apache.org/
+open http://synapse.apache.org/Synapse_Samples.html
+
+#Introduce Hi5
+open http://api.hi5.com/soap_ns10_StatusApiService.html
+
+#Install our config
+curl http://github.com/hoggarth/Synapse-Presentation/raw/master/synapse.xml > synapse-1.2/repository/conf/synapse.xml
+
+#Install our resources for our initial config
+mkdir -p src/resources/proxy
+curl http://github.com/hoggarth/Synapse-Presentation/raw/master/resources/proxy/hi5.wsdl > src/resources/proxy/hello.wsdl
+mkdir src/resources/sequence
+#curl http://github.com/hoggarth/Synapse-Presentation/raw/master/resources/sequence/MicroBlog.In.Hi5.xml > src/resources/sequence/MicroBlog.In.xml
+curl -L http://bit.ly/7PnSOt > src/resources/sequence/MicroBlog.In.xml
+#curl http://github.com/hoggarth/Synapse-Presentation/raw/master/resources/sequence/MicroBlog.Out.xml > src/resources/sequence/MicroBlog.Out.xml
+curl -L http://bit.ly/7C5y2J > src/resources/sequence/MicroBlog.Out.xml
+#curl http://github.com/hoggarth/Synapse-Presentation/raw/master/resources/sequence/MicroBlog.Fault.xml > src/resources/sequence/MicroBlog.Fault.xml
+curl -L http://bit.ly/4Wfciq > src/resources/sequence/MicroBlog.Fault.xml
+curl http://github.com/hoggarth/Synapse-Presentation/raw/master/resources/sequence/Main.In.xml > src/resources/sequence/Main.In.xml
+#curl http://github.com/hoggarth/Synapse-Presentation/raw/master/resources/sequence/Main.Out.xml > src/resources/sequence/Main.Out.xml
+curl -L http://bit.ly/61iowS > src/resources/sequence/Main.Out.xml
+#curl http://github.com/hoggarth/Synapse-Presentation/raw/master/resources/sequence/Main.Fault.xml > src/resources/sequence/Main.Fault.xml
+curl -L http://bit.ly/6NWKlu > src/resources/sequence/Main.Fault.xml
+curl http://github.com/hoggarth/Synapse-Presentation/raw/master/resources/sequence/Hi5.In.xml > src/resources/sequence/Hi5.In.xml
+
+#Show Synapse
+synapse-1.2/bin/synapse.sh
+open http://localhost:8280/soap/
+
+#Test Hi5
+curl http://github.com/hoggarth/Synapse-Presentation/raw/master/resources/messages/Hi5.SetStatus.xml | pbcopy
+curl http://github.com/hoggarth/Synapse-Presentation/raw/master/resources/messages/Hi5.GetStatus.xml | pbcopy
+
+#Make Hi5 work easier
+#curl http://github.com/hoggarth/Synapse-Presentation/raw/master/resources/sequence/Hi5.In.Ez.xml > src/resources/sequence/Hi5.In.Ez.xml
+curl -L http://bit.ly/5lMKes > src/resources/sequence/Hi5.In.Ez.xml
+mkdir src/resources/transform
+#curl http://github.com/hoggarth/Synapse-Presentation/raw/master/resources/transform/Hi5.SetStatus.xslt > src/resources/transform/Hi5.SetStatus.xslt
+curl -L http://bit.ly/6m2S7Z > src/resources/transform/Hi5.SetStatus.xslt
+#curl http://github.com/hoggarth/Synapse-Presentation/raw/master/resources/transform/Hi5.GetStatus.xslt > src/resources/transform/Hi5.GetStatus.xslt
+curl -L http://bit.ly/8o7oTK > src/resources/transform/Hi5.GetStatus.xslt
+#curl http://github.com/hoggarth/Synapse-Presentation/raw/master/resources/sequence/MicroBlog.In.Hi5.Ez.xml > src/resources/sequence/Microblog.In.xml
+curl -L http://bit.ly/86LseS > src/resources/sequence/Microblog.In.xml
+
+#Test Hi5.Ez
+curl http://github.com/hoggarth/Synapse-Presentation/raw/master/resources/messages/Hi5.SetStatus.Ez.xml | pbcopy
+curl http://github.com/hoggarth/Synapse-Presentation/raw/master/resources/messages/Hi5.GetStatus.Ez.xml | pbcopy
+
+#Introduce Twitter API
+open http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses%C2%A0update
+open http://apiwiki.twitter.com/Twitter-REST-API-Method%3A-statuses-user_timeline
+
+#Swap Hi5 for Twitter
+#curl http://github.com/hoggarth/Synapse-Presentation/raw/master/resources/sequence/Twitter.In.xml > src/resources/sequence/Twitter.In.xml
+curl -L http://bit.ly/8QcsIS > src/resources/sequence/Twitter.In.xml
+#curl http://github.com/hoggarth/Synapse-Presentation/raw/master/resources/transform/Twitter.SetStatus.xslt > src/resources/transform/Twitter.SetStatus.xslt
+curl -L http://bit.ly/8OVvqY > src/resources/transform/Twitter.SetStatus.xslt
+#curl http://github.com/hoggarth/Synapse-Presentation/raw/master/resources/transform/Twitter.GetStatus.xslt > src/resources/transform/Twitter.GetStatus.xslt
+curl -L http://bit.ly/5dWeFT > src/resources/transform/Twitter.GetStatus.xslt
+#curl http://github.com/hoggarth/Synapse-Presentation/raw/master/resources/sequence/MicroBlog.In.Twitter.xml > src/resources/sequence/Microblog.In.xml
+curl -L http://bit.ly/8H3DHL > src/resources/sequence/Microblog.In.xml
+
+#Test Twitter
+curl http://github.com/hoggarth/Synapse-Presentation/raw/master/resources/messages/Hi5.SetStatus.Ez.xml | pbcopy
+curl http://github.com/hoggarth/Synapse-Presentation/raw/master/resources/messages/Hi5.GetStatus.Ez.xml | pbcopy
+
+#Fix the responses
+#curl http://github.com/hoggarth/Synapse-Presentation/raw/master/resources/sequence/Twitter.Out.xml > src/resources/sequence/Twitter.Out.xml
+curl -L http://bit.ly/6RGDqG > src/resources/sequence/Twitter.Out.xml
+#curl http://github.com/hoggarth/Synapse-Presentation/raw/master/resources/transform/Twitter.SetStatus.Response.xslt > src/resources/transform/Twitter.SetStatus.Response.xslt
+curl -L http://bit.ly/8BVIKp > src/resources/transform/Twitter.SetStatus.Response.xslt
+#curl http://github.com/hoggarth/Synapse-Presentation/raw/master/resources/transform/Twitter.GetStatus.Response.xslt > src/resources/transform/Twitter.GetStatus.Response.xslt
+curl -L http://bit.ly/6ifdIM > src/resources/transform/Twitter.GetStatus.Response.xslt
+#curl http://github.com/hoggarth/Synapse-Presentation/raw/master/resources/sequence/MicroBlog.Out.Twitter.xml > src/resources/sequence/Microblog.Out.xml
+curl -L http://bit.ly/7Ed9EK > src/resources/sequence/Microblog.Out.xml
+
+#Test Twitter
+curl http://github.com/hoggarth/Synapse-Presentation/raw/master/resources/messages/Hi5.SetStatus.Ez.xml | pbcopy
+curl http://github.com/hoggarth/Synapse-Presentation/raw/master/resources/messages/Hi5.GetStatus.Ez.xml | pbcopy
+
+#Add the Tweet History
+#curl http://github.com/hoggarth/Synapse-Presentation/raw/master/resources/sequence/TweetHistory.In.xml > src/resources/sequence/TweetHistory.In.xml
+curl -L http://bit.ly/8EXZRW > src/resources/sequence/TweetHistory.In.xml
+#curl http://github.com/hoggarth/Synapse-Presentation/raw/master/resources/transform/TweetHistory.SetStatus.xslt > src/resources/transform/TweetHistory.SetStatus.xslt
+curl -L http://bit.ly/68NK7G > src/resources/transform/TweetHistory.SetStatus.xslt
+#curl http://github.com/hoggarth/Synapse-Presentation/raw/master/resources/sequence/TweetHistory.Out.xml > src/resources/sequence/TweetHistory.Out.xml
+curl -L http://bit.ly/7rJRyW > src/resources/sequence/TweetHistory.Out.xml
+#curl http://github.com/hoggarth/Synapse-Presentation/raw/master/resources/sequence/TweetHistory.Fault.xml > src/resources/sequence/TweetHistory.Fault.xml
+curl -L http://bit.ly/6hdU2U > src/resources/sequence/TweetHistory.Fault.xml
+
+open http://twitter.com/\#search\?q\=%23TCJUG
+
+#Synapse Documentation
+open http://synapse.apache.org/Synapse_Configuration_Language.html#registry
+open http://synapse.apache.org/Synapse_Configuration_Language.html#proxy
+open http://synapse.apache.org/Synapse_Configuration_Language.html#sequence
+open http://synapse.apache.org/Synapse_Configuration_Language.html#log
+open http://synapse.apache.org/Synapse_Configuration_Language.html#property
+open http://synapse.apache.org/Synapse_Configuration_Language.html#send
+open http://synapse.apache.org/Synapse_Configuration_Language.html#endpoint
+open http://synapse.apache.org/Synapse_Configuration_Language.html#switch
+open http://synapse.apache.org/Synapse_Configuration_Language.html#xslt
+
+open http://synapse.apache.org/Synapse_Configuration_Language.html#mediator
+
+
